@@ -109,22 +109,22 @@ items.each do |item|
         bag.drop
         bag.put(item)
       else
-        # sumValue = 0
-        #         sumSize = 0
-        #         nDrops = 0
-        #         
-        #         while sumValue <= item.value and sumSize < item.size  do
+        sumValue = 0
+        sumSize = 0
+        nDrops = 0
+        
+        # while sumValue <= item.value and sumSize < item.size and if nDrops <= bag.items.count - 1 do
         #           auxItem = bag.items[bag.items.count - 1 - nDrops]
         #           sumValue += auxItem.value
         #           sumSize += auxItem.size
         #           nDrops += 1
         #         end
-        #         
-        #         (1..nDrops).each do
-        #           bag.drop
-        #         end
-        #         
-        #         bag.put(item)
+        
+        (1..nDrops).each do
+          bag.drop
+        end
+        
+        bag.put(item)
         
       end
     end
