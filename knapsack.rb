@@ -86,7 +86,7 @@ end
 bag = Bag.new(rand(1..2000)) #testing
 
 # numberOfitems = gets.chomp #spoj
-numberOfItems = rand(1..20) #testing
+numberOfItems = rand(1..2000) #testing
 
 items = []
 (1..numberOfItems).each do
@@ -101,9 +101,6 @@ items.each do |item|
   if not bag.put(item) and not bag.empty?
     lastItem = bag.items.last
     
-    p lastItem
-    p bag.items.count
-    
     if item.value > lastItem.value
       if lastItem.size >= item.size
         bag.drop
@@ -113,12 +110,12 @@ items.each do |item|
         sumSize = 0
         nDrops = 0
         
-        # while sumValue <= item.value and sumSize < item.size and if nDrops <= bag.items.count - 1 do
-        #           auxItem = bag.items[bag.items.count - 1 - nDrops]
-        #           sumValue += auxItem.value
-        #           sumSize += auxItem.size
-        #           nDrops += 1
-        #         end
+        while sumValue <= item.value and sumSize < item.size and nDrops < bag.items.count  do
+          auxItem = bag.items[bag.items.count - 1 - nDrops]
+          sumValue += auxItem.value
+          sumSize += auxItem.size
+          nDrops += 1
+        end
         
         (1..nDrops).each do
           bag.drop
@@ -134,7 +131,7 @@ items.each do |item|
     end
   end
 end
-# 
+
 p bag.value
 
 

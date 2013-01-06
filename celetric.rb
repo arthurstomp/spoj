@@ -20,8 +20,9 @@
 # Os matemáticos da companhia encontraram um modo de ganhar ainda mais dinheiro. Ao invés de lhe dizer quanta energia você consumiu e quanto 
 #você deve pagar, eles mostrarão a você dois números relacionados a você e a um vizinho aleatório:
 # 
-# o total a pagar se seus consumos fossem somados; e
-# a valor absoluto da diferença entre os custos de suas contas.
+# o total a pagar se seus consumos fossem somados; 
+# e a valor absoluto da diferença entre os custos de suas contas.
+#
 # Se não conseguir descobrir quanto deve pagar, você deve pagar outros 100 Reais para tal "serviço". Você é muito econômico, e portanto você 
 #tem certeza que não consome mais que nenhum de seus vizinhos. Então, esperto como é, você sabe que consegue computar quanto tem que pagar. 
 #Por exemplo, suponha que a companhia informou a você os dois seguintes números: A = 1100 e B = 300. Então o seu consumo e o de seu vizinho 
@@ -52,3 +53,83 @@
 # Saída:
 # 350
 # 2900
+
+def bill(wh)
+  if wh <= 100
+    return 2 * wh
+  elsif wh > 100 and wh <= 10000
+    return 2 * 100 + 3 * (wh - 100)
+  elsif wh > 10000 and wh <= 1000000
+    return 2 * 100 + 3 * 9900 + 5 * (wh - 10000)
+  else 
+    return 2 * 100 + 3 * 9900 + 5 * 990000 + 7 * (wh - 1000000)
+  end
+end
+
+def consumption(bill)
+  if bill <= 200
+    return bill/2
+  elsif bill > 200 and bill <= 29900
+    return (bill + 100)/3
+  elsif bill > 29900 and bill <= 4979900
+    return (bill + 20100)/5
+  else
+    return (bill + 2020100)/7
+  end
+end
+
+# a = 35515 #bill for the sum of the consumption #Testing
+# b = 27615 #diference between the bills. #Testing
+# 
+# sumOfConsumption = consumption(a)
+
+# #Linear way
+# result = 0
+# (0..sumOfConsumption).each do |myConsumption|
+#   if (bill(myConsumption) - bill(sumOfConsumption - myConsumption)).abs == b
+#     result = myConsumption
+#     break
+#   end
+# end
+# p bill(result)
+
+#Binary way
+
+def binarySearch(lower, upper, wantedDiference, sumOfConsumption)
+   return false if lower > upper
+   myConsumption = (lower+upper)/2
+   diference = (bill(myConsumption) - bill(sumOfConsumption - myConsumption )).abs
+   if ( diference == wantedDiference)
+     myConsumption
+   elsif (diference < wantedDiference)
+     binarySearch(lower, myConsumption-1, wantedDiference, sumOfConsumption)
+   else
+     binarySearch(myConsumption+1, upper, wantedDiference, sumOfConsumption)
+   end
+end
+
+#spoj
+a = gets.chomp.to_i #spoj
+b = gets.chomp.to_i #spoj
+while a != 0 and b != 0 do
+  sumOfConsumption = consumption(a)
+  #Binary way
+  p bill(binarySearch(0, sumOfConsumption, b, sumOfConsumption))
+  #Linear way
+  # result = 0
+  #   (0..sumOfConsumption).each do |myConsumption|
+  #       if (bill(myConsumption) - bill(sumOfConsumption - myConsumption)).abs == b
+  #         result = myConsumption
+  #         break
+  #       end
+  #     end
+  #     p bill(result)
+  a = gets.chomp.to_i #spoj
+  b = gets.chomp.to_i #spoj
+end
+
+
+
+
+
+
