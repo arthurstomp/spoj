@@ -77,37 +77,89 @@ class MonkeyB
   end
 end
 
-#p "Svada problem"
-#p "Total time that the monkeys can spent in the garden in seconds"
-totalTime = rand(1..60) #testing
-# totalTime = rand(10) #testing
-# totalTime = gets.chomp #spoj
-#p "Number of finding coconuts type of monkey"
-# nTypeA = gets.chomp #spoj
-# nTypeA = rand(1..10) #testing
-nTypeA = rand(10) #testing
+def harvestedCoconuts(monkeysOfTypeA, time)
+  nHarvestedCoconuts = 0
+  monkeysOfTypeA.each do |monkey|
+    if time > monkey.findSpotTime
+      nHarvestedCoconuts += time - monkey.findSpotTime + 1 + (time/monkey.takeCoconutTime)
+    end
+  end
+  return nHarvestedCoconuts
+end
+
+def openedCoconuts(monkeysOfTypeB, time)
+  nOpenedCoconuts = 0
+  monkeysOfTypeB.each do |monkey|
+    if time > monkey.findToolTime
+      nOpenedCoconuts += time - monkey.findToolTime + 1 + (time/monkey.openCoconutTime)
+    end
+  end
+  return nOpenedCoconuts
+end
+
+def enoughCoconuts?(nCoconuts,monkeysOfTypeB,time)
+  nOpenedCoconuts = openedCoconuts(monkeysOfTypeB,time)
+  if nCoconuts < nOpenedCoconuts
+    return false
+  else
+    return true
+  end
+end
+
+totalTime = 20
 monkeysOfTypeA = []
-(1..nTypeA).each do 
-  # findSpotTime = gets.chomp #spoj
-  findSpotTime = rand(1..10) #testing
-  # findSpotTime = rand(10) #testing
-  # takeCoconutTime = gets.chomp #spoj
-  takeCoconutTime = rand(1..10) #testing
-  # takeCoconutTime = rand(10) #testing
-  monkeysOfTypeA << MonkeyA.new(findSpotTime,takeCoconutTime)
-end
-#p "Number of open coconuts type of monkeys"
-# nTypeB = gets.chomp #spoj
-# nTypeB = rand(1..10) #testing
-nTypeB = rand(10) #testing
+monkeysOfTypeA << MonkeyA.new(3,2)
+monkeysOfTypeA << MonkeyA.new(1,3)
 monkeysOfTypeB = []
-(1..nTypeB).each do
-  # findToolTime = gets.chomp # spoj
-  findToolTime = rand(1..10) #testing
-  # findToolTime = rand(10) #testing
-  # openCoconutTime = gets.chomp #spoj
-  openCoconutTime = rand(1..10) #testing
-  # openCoconutTime = rand(10) #testing
-  monkeysOfTypeB << MonkeyB.new(findToolTime, openCoconutTime)
+monkeysOfTypeB << MonkeyB.new(3,1)
+monkeysOfTypeB << MonkeyB.new(4,1)
+monkeysOfTypeB << MonkeyB.new(5,1)
+
+#Linear way
+result = nil
+(1..totalTime).each do |time|
+  harvestedCoconuts = harvestedCoconuts(monkeysOfTypeA,time)
+  if enoughCoconuts?(harvestedCoconuts, monkeysOfTypeB,totalTime-time)
+    result = time
+    break
+  end
 end
+
+p result
+
+
+#spoj
+# totalTime = gets.chomp.to_i
+# numberOfMonkeysOfTypeA = gets.chomp.to_i
+# monkeysOfTypeA = []
+# (1..numberOfMonkeysOfTypeA).each do 
+#   findSpotTime = gets.chomp.to_i 
+#   takeCoconutTime = gets.chomp.to_i
+#   monkeysOfTypeA << MonkeyA.new(findSpotTime,takeCoconutTime)
+# end
+# numberOfMonkeysOfTypeB = gets.chomp.to_i
+# monkeysOfTypeB = []
+# (1..numberOfMonkeysOfTypeB).each do 
+#   findToolTime = gets.chomp.to_i
+#   openCoconutTime = gets.chomp.to_i
+#   monkeysOfTypeB << MonkeyB.new(findToolTime, openCoconutTime)
+# end
+# #Linear way
+# result = 0
+# (1..totalTime).each do |time|
+#   harvestedCoconuts = harvestedCoconuts(monkeysOfTypeA,time)
+#   if enoughCoconuts?(harvestedCoconuts, monkeysOfTypeB,totalTime-time)
+#     result = time
+#     break
+#   end
+# end
+# 
+# p result
+
+
+
+
+
+
+
 

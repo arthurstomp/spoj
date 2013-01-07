@@ -81,19 +81,19 @@ class Bag
   
 end
 
-# bagCapacity = gets.chomp #spoj
-# bag = Bag.new(bagCapacity)
-bag = Bag.new(rand(1..2000)) #testing
+bagCapacity = gets.chomp.to_i #spoj
+bag = Bag.new(bagCapacity) #spoj
+# bag = Bag.new(rand(1..2000)) #testing
 
-# numberOfitems = gets.chomp #spoj
-numberOfItems = rand(1..2000) #testing
+numberOfitems = gets.chomp.to_i #spoj
+# numberOfItems = rand(1..2000) #testing
 
 items = []
 (1..numberOfItems).each do
-  # size = gets.chomp #spoj
-  size = rand(1..2000) #testing
-  # value = gets.chomp #spoj
-  value = rand(1..2000) #testing 
+  size = gets.chomp.to_i #spoj
+  # size = rand(1..2000) #testing
+  value = gets.chomp.to_i #spoj
+  # value = rand(1..2000) #testing 
   items << Item.new(size,value)
 end
 

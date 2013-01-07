@@ -114,7 +114,12 @@ b = gets.chomp.to_i #spoj
 while a != 0 and b != 0 do
   sumOfConsumption = consumption(a)
   #Binary way
-  p bill(binarySearch(0, sumOfConsumption, b, sumOfConsumption))
+  oneOfConsumption = binarySearch(0, sumOfConsumption, b, sumOfConsumption)
+  if oneOfConsumption > sumOfConsumption/2
+    p bill(sumOfConsumption - oneOfConsumption)
+  else
+    p bill(oneOfConsumption)
+  end
   #Linear way
   # result = 0
   #   (0..sumOfConsumption).each do |myConsumption|
