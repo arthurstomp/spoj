@@ -34,7 +34,7 @@
 # Entrada
 # 
 # A entrada contém vários casos de teste. Cada caso de teste é composto de uma única linha contendo dois inteiros A e B, separados por um espaço em branco, 
-#representando os valores apresentados a você (1 ≤ A,B ≤ 109). Você pode assumir que sempre haverá uma soluçao única, ou seja, existe apenas um par de consumos 
+#representando os valores apresentados a você (1 ≤ A,B ≤ 10**9). Você pode assumir que sempre haverá uma soluçao única, ou seja, existe apenas um par de consumos 
 #que produz esses valores.
 # 
 # O último caso de teste é seguido de uma linha contendo dois zeros separados por um espaço em branco.
@@ -78,25 +78,8 @@ def consumption(bill)
   end
 end
 
-# a = 35515 #bill for the sum of the consumption #Testing
-# b = 27615 #diference between the bills. #Testing
-# 
-# sumOfConsumption = consumption(a)
-
-# #Linear way
-# result = 0
-# (0..sumOfConsumption).each do |myConsumption|
-#   if (bill(myConsumption) - bill(sumOfConsumption - myConsumption)).abs == b
-#     result = myConsumption
-#     break
-#   end
-# end
-# p bill(result)
-
-#Binary way
-
 def binarySearch(lower, upper, wantedDiference, sumOfConsumption)
-   return false if lower > upper
+   return -1 if lower > upper
    myConsumption = (lower+upper)/2
    diference = (bill(myConsumption) - bill(sumOfConsumption - myConsumption )).abs
    if ( diference == wantedDiference)
@@ -108,29 +91,43 @@ def binarySearch(lower, upper, wantedDiference, sumOfConsumption)
    end
 end
 
+# #Testing
+# consumptionX = rand(1..1000)
+# consumptionY = rand(1..1000)
+# lowerConsumption = consumptionX < consumptionY ? consumptionX : consumptionY
+# 
+# a = bill(consumptionX + consumptionY) #bill for the sum of the consumption #Testing
+# b = (bill(consumptionX) - bill(consumptionY)).abs #diference between the bills. #Testing
+# 
+# sumOfConsumption = consumption(a)
+# 
+# #Binary way
+# foundBill = bill(binarySearch(0,sumOfConsumption,b,sumOfConsumption))
+# p "Bill found with binary search algoritm = #{foundBill}"
+# 
+# #Linear way
+# result = 0
+# (0..sumOfConsumption).each do |myConsumption|
+#   if (bill(myConsumption) - bill(sumOfConsumption - myConsumption)).abs == b
+#     result = myConsumption
+#     break
+#   end
+# end
+# p "Bill found with linear search algoritm = #{bill(result)}"
+# 
+# p "Sucess" if foundBill == bill(lowerConsumption) and bill(result) == foundBill
+
 #spoj
-a = gets.chomp.to_i #spoj
-b = gets.chomp.to_i #spoj
+inputs = gets.chomp.split(" ")
+a = inputs[0].to_i #spoj
+b = inputs[1].to_i.to_i #spoj
 while a != 0 and b != 0 do
   sumOfConsumption = consumption(a)
   #Binary way
-  oneOfConsumption = binarySearch(0, sumOfConsumption, b, sumOfConsumption)
-  if oneOfConsumption > sumOfConsumption/2
-    p bill(sumOfConsumption - oneOfConsumption)
-  else
-    p bill(oneOfConsumption)
-  end
-  #Linear way
-  # result = 0
-  #   (0..sumOfConsumption).each do |myConsumption|
-  #       if (bill(myConsumption) - bill(sumOfConsumption - myConsumption)).abs == b
-  #         result = myConsumption
-  #         break
-  #       end
-  #     end
-  #     p bill(result)
-  a = gets.chomp.to_i #spoj
-  b = gets.chomp.to_i #spoj
+  p bill(binarySearch(0,sumOfConsumption,b,sumOfConsumption))
+  inputs = gets.chomp.split(" ")
+  a = inputs[0].to_i #spoj
+  b = inputs[1].to_i.to_i #spoj
 end
 
 
