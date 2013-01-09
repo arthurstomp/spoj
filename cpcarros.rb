@@ -71,98 +71,154 @@
 # Y
 # N
 
-class Plate
-  def initialize plateString
-    
-    if Plate.validatePlate(plateString)
-      @plateString = plateString.to_s.upcase
-      @valid = true
-    else
-      @plateString = nil
-      @valid = false
-    end
+@alpha = %w{A B C D E F G H I J K L M N O P Q R S T U V W X Y Z}
+@alphaNew = %w{B D E F G H J K L N O Q R S T U V W X Y Z}
+
+def valid?(plate)
+  plate.upcase!
+  if plate.length == 7 and plate.scan(/[A-Z]/).count == 3 and plate.scan(/[0-9]/).count == 4 #old licence plate
+    return true
+  elsif plate.length == 7 and plate.scan(/[A-Z]/).count == 5 and plate.scan(/[0-9]/).count == 2 and plate.scan(/A|C|M|I|P/).empty? #new licence plate
+    return true
+  else
+    return false
   end
-  
-  def self.comparePlateWithConfidence(plateA,plateB,confidence)
-    if plateA.to_s == plateB.to_s
-      return 0
-    else
-      if plateA.to_s.scan(/\d+/).join('').length == plateB.to_s.scan(/\d+/).join('').length #Are of the same type
-        if plateA.to_i > plateB.to_i
-          return 1
-        else
-          
-        end
-      else #Arent the same type
-        if plateA.to_s.scan(/\d+/).join('').length == 2 and plateB.to_s.scan(/\d+/).join('').length == 2
-        end
-      end
-    end
-  end
-  
-  def self.validatePlate(plate)
-    plate.upcase!
-    if plate.length == 7 and plate.scan(/[A-Z]/).count == 3 and plate.scan(/[0-9]/).count == 4 #old licence plate
-      return true
-    elsif plate.length == 7 and plate.scan(/[A-Z]/).count == 5 and plate.scan(/[0-9]/).count == 2 and plate.scan(/A|C|M|I|P/).empty? #new licence plate
-      return true
-    else
-      return false
-    end
-  end
-  
-  def valid?
-    return @valid
-  end
-  
-  def to_s
-    @plateString
-  end
-  
-  def to_i
-    numericPart = stringPlate.scan(/\d+/).join('')
-    if numericPart.length == 4
-      alphaPart = stringPlate[0..2]
-      alphaPartAsNum = stringToNum(alphaPart)
-      return (alphaPartAsNum*10000) + numericPart.to_i
-    elsif numericPart.length == 2
-      alphaPart = stringPlate[0..4]
-      alphaPartAsNum = stringToNum(alphaPart)
-      return (alphaPartAsNum*100) + numericPart.to_i
-    end
-  end
-  
-  # private
-  
-  @alpha = %w{A B C D E F G H I J K L M N O P Q R S T U V W X Y Z} # use A as zero
-  
-  def self.numToAlphaPart(num)
-    result = []
-    begin 
-      result << @alpha[(num % 26)]
-      num = num / 26
-    end until num == 0
-    return result.join('').reverse
-  end
-  
-  def stringToNum(alphaPart)
-    arrayAlphaPart = alphaPart.reverse.split(//)
+end
+
+def stringToNum(string)
+  if string.length == 3
+    array = string.split(//)
     result = 0
-    arrayAlphaPart.each_index do |i|
-      result += @alpha.index(arrayAlphaPart[i])*(26**i)
+    array.each_index do |i|
+      result += @alpha.index(array[i])*(@alpha.count**(array.count - 1 - i))
     end
     return result
   end
-  
+  if string.length == 5 
+    array = string.split(//)
+    result = 0
+    array.each_index do |i|
+      result += @alphaNew.index(array[i])*(@alphaNew.count**(array.count - 1 - i))
+    end
+    return result
+  end
 end
 
-# x = Plate.new("ABC0004")
-# y = Plate.new("BBBBD00")
+def numToStringOld(num)
+  result = []
+  begin 
+    result << @alpha[(num % @alpha.count)]
+    num = num / @alpha.count
+  end until num == 0
+  return result.join('').reverse
+end
 
-# p Plate.numToAlphaPart 26
+def numToStringNew(num)
+  result = []
+  begin 
+    result << @alphaNew[(num % @alphaNew.count)]
+    num = num / @alphaNew.count
+  end until num == 0
+  return result.join('').reverse
+end
 
-# p stringToNum("BA")
+def plateToNum(plate)
+  stringPart = plate.scan(/[A-Z]/)
+  numericPart = plate.scan(/[0-9]/)
+  stringPartAsNum = stringToNum(stringPart.join(""))
+  return stringPartAsNum * (10**numericPart.length) + numericPart.join("").to_i
+end
 
-# p x.to_s[0..x.to_s.length-5]
-# p x + 1
-# p y + 1
+def newPlateNumBackToPlate(newPlateNum)
+  stringPartNum = newPlateNum.to_s[0..-3].to_i
+  return "#{numToStringNew(stringPartNum)}#{newPlateNum.to_s[newPlateNum.to_s.length - 2..newPlateNum.to_s.length]}"
+end
+
+# Entrada
+# 1. ABC1234 ABC1240 6 - OK
+# 2. ABC1234 ABC1234 6 - OK
+# 3. ACM5932 ADM5933 260000 - OK
+# 4. BBBBB23 BBBBC23 100 - OK
+# 5. BBBBB23 BBBBD00 77 - OK
+# 6. ZZZ9997 ZZZ9999 1 - OK
+# 7. ZZZ9998 BBBBB01 3 - OK
+# 8. ZZZZZ95 ZZZZZ99 10 - OK
+# 9. BBBBB23 BBBBB22 5 - OK
+# * * 0
+# 
+# Saída
+# 1. Y
+# 2. N
+# 3. N
+# 4. N
+# 5. Y
+# 6. N
+# 7. Y
+# 8. Y
+# 9. N
+#Testing 
+sm = "BBBBB23"
+si = "BBBBB22"
+c = 5
+
+# #spoj
+# inputs = gets.chomp.split(" ")
+# sm = inputs[0]
+# si = inputs[1]
+# c = inputs[2].to_i
+# while inputs[0] != "*" and inputs[1] != "*" and inputs[2]to_i != 0 do
+#   inputs = gets.chomp.split(" ")
+#   sm = Plate.new(inputs[0])
+#   si = Plate.new(inputs[1])
+#   c = inputs[2].to_i
+# end
+
+#Solution
+maxNumForOldType = plateToNum("ZZZ9999")
+firstNumForNewType = plateToNum("BBBBB00")
+if not valid?(si)
+  p 'N'
+else
+  if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are of the old type
+    smNum, siNum = plateToNum(sm), plateToNum(si)
+    if siNum <= smNum 
+      p 'N'
+    else
+      if siNum <= smNum + c
+        p 'Y'
+      else
+        p 'N'
+      end
+    end
+  elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
+    smNum, siNum = plateToNum(sm), plateToNum(si)
+    if siNum <= smNum 
+      p 'N'
+    else
+      if siNum <= smNum + c
+        p 'Y'
+      else
+        p 'N'
+      end
+    end
+  elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5
+    smNum, siNum = plateToNum(sm), plateToNum(si)
+    if smNum + c > maxNumForOldType
+      c -= maxNumForOldType - smNum
+      smNum = firstNumForNewType
+      if siNum <= smNum 
+        p 'N'
+      else
+        if siNum <= smNum + c
+          p 'Y'
+        else
+          p 'N'
+        end
+      end
+    else
+      p "N"
+    end
+  elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3
+    p 'N'
+  end
+end
