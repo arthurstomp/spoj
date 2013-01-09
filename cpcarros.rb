@@ -268,8 +268,8 @@ while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
     end
   end
   inputs = gets.chomp.split(" ")
-  sm = Plate.new(inputs[0])
-  si = Plate.new(inputs[1])
+  sm = inputs[0]
+  si = inputs[1]
   c = inputs[2].to_i
 end
 
