@@ -156,56 +156,76 @@ end
 # 7. Y
 # 8. Y
 # 9. N
-#Testing 
-sm = "BBBBB23"
-si = "BBBBB22"
-c = 5
-
-# #spoj
-# inputs = gets.chomp.split(" ")
-# sm = inputs[0]
-# si = inputs[1]
-# c = inputs[2].to_i
-# while inputs[0] != "*" and inputs[1] != "*" and inputs[2]to_i != 0 do
-#   inputs = gets.chomp.split(" ")
-#   sm = Plate.new(inputs[0])
-#   si = Plate.new(inputs[1])
-#   c = inputs[2].to_i
+# #Testing  
+# sm = "BBBBB23"
+# si = "BBBBB22"
+# c = 5
+# 
+# #Solution
+# maxNumForOldType = plateToNum("ZZZ9999")
+# firstNumForNewType = plateToNum("BBBBB00")
+# if not valid?(si)
+#   p 'N'
+# else
+#   if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are of the old type
+#     smNum, siNum = plateToNum(sm), plateToNum(si)
+#     if siNum <= smNum 
+#       p 'N'
+#     else
+#       if siNum <= smNum + c
+#         p 'Y'
+#       else
+#         p 'N'
+#       end
+#     end
+#   elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
+#     smNum, siNum = plateToNum(sm), plateToNum(si)
+#     if siNum <= smNum 
+#       p 'N'
+#     else
+#       if siNum <= smNum + c
+#         p 'Y'
+#       else
+#         p 'N'
+#       end
+#     end
+#   elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5
+#     smNum, siNum = plateToNum(sm), plateToNum(si)
+#     if smNum + c > maxNumForOldType
+#       c -= maxNumForOldType - smNum
+#       smNum = firstNumForNewType
+#       if siNum <= smNum 
+#         p 'N'
+#       else
+#         if siNum <= smNum + c
+#           p 'Y'
+#         else
+#           p 'N'
+#         end
+#       end
+#     else
+#       p "N"
+#     end
+#   elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3
+#     p 'N'
+#   end
 # end
 
-#Solution
-maxNumForOldType = plateToNum("ZZZ9999")
-firstNumForNewType = plateToNum("BBBBB00")
-if not valid?(si)
-  p 'N'
-else
-  if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are of the old type
-    smNum, siNum = plateToNum(sm), plateToNum(si)
-    if siNum <= smNum 
-      p 'N'
-    else
-      if siNum <= smNum + c
-        p 'Y'
-      else
-        p 'N'
-      end
-    end
-  elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
-    smNum, siNum = plateToNum(sm), plateToNum(si)
-    if siNum <= smNum 
-      p 'N'
-    else
-      if siNum <= smNum + c
-        p 'Y'
-      else
-        p 'N'
-      end
-    end
-  elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5
-    smNum, siNum = plateToNum(sm), plateToNum(si)
-    if smNum + c > maxNumForOldType
-      c -= maxNumForOldType - smNum
-      smNum = firstNumForNewType
+
+#spoj
+inputs = gets.chomp.split(" ")
+sm = inputs[0]
+si = inputs[1]
+c = inputs[2].to_i
+while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
+  #Solution
+  maxNumForOldType = plateToNum("ZZZ9999")
+  firstNumForNewType = plateToNum("BBBBB00")
+  if not valid?(si)
+    p 'N'
+  else
+    if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are of the old type
+      smNum, siNum = plateToNum(sm), plateToNum(si)
       if siNum <= smNum 
         p 'N'
       else
@@ -215,10 +235,42 @@ else
           p 'N'
         end
       end
-    else
-      p "N"
+    elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
+      smNum, siNum = plateToNum(sm), plateToNum(si)
+      if siNum <= smNum 
+        p 'N'
+      else
+        if siNum <= smNum + c
+          p 'Y'
+        else
+          p 'N'
+        end
+      end
+    elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5
+      smNum, siNum = plateToNum(sm), plateToNum(si)
+      if smNum + c > maxNumForOldType
+        c -= maxNumForOldType - smNum
+        smNum = firstNumForNewType
+        if siNum <= smNum 
+          p 'N'
+        else
+          if siNum <= smNum + c
+            p 'Y'
+          else
+            p 'N'
+          end
+        end
+      else
+        p "N"
+      end
+    elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3
+      p 'N'
     end
-  elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3
-    p 'N'
   end
+  inputs = gets.chomp.split(" ")
+  sm = Plate.new(inputs[0])
+  si = Plate.new(inputs[1])
+  c = inputs[2].to_i
 end
+
+
