@@ -106,6 +106,7 @@ def enoughCoconuts?(nCoconuts,monkeysOfTypeB,time)
   end
 end
 
+#Testing
 totalTime = 20
 monkeysOfTypeA = []
 monkeysOfTypeA << MonkeyA.new(3,2)
@@ -116,7 +117,7 @@ monkeysOfTypeB << MonkeyB.new(4,1)
 monkeysOfTypeB << MonkeyB.new(5,1)
 
 #Linear way
-result = nil
+result = 0
 (1..totalTime).each do |time|
   harvestedCoconuts = harvestedCoconuts(monkeysOfTypeA,time)
   if enoughCoconuts?(harvestedCoconuts, monkeysOfTypeB,totalTime-time)
@@ -126,22 +127,39 @@ result = nil
 end
 
 p result
+p harvestedCoconuts(monkeysOfTypeA,result)
+p openedCoconuts(monkeysOfTypeB, totalTime - result)
 
 
-#spoj
+# #Binary way
+# def binarySearch(lower, upper, monkeysOfTypeA, monkeysOfTypeB)
+#    return -1 if lower > upper
+#    time = (lower+upper)/2
+#    if (vector[mid] == element)
+#      element
+#    elsif (element < vector[mid])
+#      binarySearch(vector, lower, time-1, element)
+#    else
+#      binarySearch(vector, time+1, upper, element)
+#    end
+# end
+
+# #spoj
 # totalTime = gets.chomp.to_i
 # numberOfMonkeysOfTypeA = gets.chomp.to_i
 # monkeysOfTypeA = []
-# (1..numberOfMonkeysOfTypeA).each do 
-#   findSpotTime = gets.chomp.to_i 
-#   takeCoconutTime = gets.chomp.to_i
+# (1..numberOfMonkeysOfTypeA).each do
+#   inputs =  gets.chomp.split(" ")
+#   findSpotTime = inputs[0].to_i 
+#   takeCoconutTime = inputs[1].to_i
 #   monkeysOfTypeA << MonkeyA.new(findSpotTime,takeCoconutTime)
 # end
 # numberOfMonkeysOfTypeB = gets.chomp.to_i
 # monkeysOfTypeB = []
 # (1..numberOfMonkeysOfTypeB).each do 
-#   findToolTime = gets.chomp.to_i
-#   openCoconutTime = gets.chomp.to_i
+#   inputs =  gets.chomp.split(" ")
+#   findToolTime = inputs[0].to_i 
+#   openCoconutTime = inputs[1].to_i 
 #   monkeysOfTypeB << MonkeyB.new(findToolTime, openCoconutTime)
 # end
 # #Linear way
@@ -155,6 +173,8 @@ p result
 # end
 # 
 # p result
+
+
 
 
 

@@ -61,7 +61,7 @@ class Bag
   end
   
   def put(item)
-    if item.size <= self.size - self.occupied
+    if item.size <= self.size - self.occupied and item.value != 0
       self.items << item
       self.items.sort!{|x,y| y.value <=> x.value}
       self.occupied += item.size
@@ -81,54 +81,69 @@ class Bag
   
 end
 
-bagCapacity = gets.chomp.to_i #spoj
-bag = Bag.new(bagCapacity) #spoj
+# #testing with random
 # bag = Bag.new(rand(1..2000)) #testing
-
-numberOfitems = gets.chomp.to_i #spoj
 # numberOfItems = rand(1..2000) #testing
+# 
+# items = []
+# (1..numberOfItems).each do
+#   size = rand(1..2000) #testing
+#   value = rand(1..2000) #testing 
+#   items << Item.new(size,value)
+# end
+# items.sort!{|x,y| x.value <=> y.value}
 
-items = []
-(1..numberOfItems).each do
-  size = gets.chomp.to_i #spoj
-  # size = rand(1..2000) #testing
-  value = gets.chomp.to_i #spoj
-  # value = rand(1..2000) #testing 
-  items << Item.new(size,value)
-end
+#testing 
+bag = Bag.new(4)
+items = [] 
+i1 = Item.new(1,8)
+i2 = Item.new(2,4)
+i3 = Item.new(3,0)
+i4 = Item.new(2,5)
+i5 = Item.new(2,3)
+items = [i1, i2, i3, i4, i5]
+items.sort!{|x,y| x.value <=> y.value}
 
+# #spoj
+# inputs = gets.chomp.split(" ")
+# bagCapacity = inputs[0].to_i #spoj
+# bag = Bag.new(bagCapacity) #spoj
+# 
+# numberOfItems = inputs[1].to_i #spoj
+# 
+# items = []
+# (1..numberOfItems).each do
+#   inputs = gets.chomp.split(" ")
+#   size = inputs[0].to_i
+#   value = inputs[1].to_i 
+#   items << Item.new(size,value)
+# end
+# items.sort!{|x,y| x.value <=> y.value}
+
+#Solution
 items.each do |item|
-  if not bag.put(item) and not bag.empty?
-    lastItem = bag.items.last
-    
-    if item.value > lastItem.value
-      if lastItem.size >= item.size
-        bag.drop
-        bag.put(item)
-      else
-        sumValue = 0
-        sumSize = 0
-        nDrops = 0
-        
-        while sumValue <= item.value and sumSize < item.size and nDrops < bag.items.count  do
-          auxItem = bag.items[bag.items.count - 1 - nDrops]
-          sumValue += auxItem.value
-          sumSize += auxItem.size
-          nDrops += 1
-        end
-        
+  successfullyPutItem = bag.put(item)
+  if not successfullyPutItem and not bag.empty? and item.value != 0
+    lastItemInTheBag = bag.items.last
+    if (item.value > lastItemInTheBag.value and item.size <= lastItemInTheBag.size) or 
+      (item.value == lastItemInTheBag.value and item.size < lastItemInTheBag.size)
+      bag.drop
+      bag.put(item)
+    elsif item.value > lastItemInTheBag.value and item.size > lastItemInTheBag.size
+      sumValue, sumSize, nDrops = lastItemInTheBag.value , lastItemInTheBag.size , 0
+      while sumValue < item.value and sumSize <= item.size and nDrops < bag.items.count do
+        auxItem = bag.items[bag.items.index(lastItemInTheBag) - 1 - nDrops]
+        sumValue += auxItem.value
+        sumSize += auxItem.size
+        nDrops += 1 
+      end
+      if sumValue < item.value and sumSize <= item.size and nDrops < bag.items.count
         (1..nDrops).each do
           bag.drop
         end
-        
         bag.put(item)
-        
       end
-    end
-    if item.value == lastItem.value and item.size < lastItem.size
-      bag.drop
-      bag.put(item)
-    end
+    end  
   end
 end
 

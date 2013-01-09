@@ -143,7 +143,6 @@ class Plate
       (1..3-resultAlphaPart.length).each do 
         resultAlphaPart.prepend("A")
       end
-      resultAlphaPart[0..resultAlphaPart.length - 4] = ""
       resultPlate = "#{resultAlphaPart}#{sprintf('%04d',resultNum.to_s[resultNum.to_s.length - 4..resultNum.to_s.length].to_i)}"
       @plateString = resultPlate
     elsif numericPart.length == 2
@@ -158,9 +157,9 @@ class Plate
       end
       # resultAlphaPart[0..resultAlphaPart.length - 4] = ""
       resultPlate = "#{resultAlphaPart}#{sprintf '%02d',(resultNum.to_s[resultNum.to_s.length - 2..resultNum.to_s.length].to_i)}"
-      # @plateString = resultPlate
+      @plateString = resultPlate
     end
-    # return @plateString
+    return @plateString
   end
   
   # private
@@ -188,15 +187,15 @@ class Plate
 end
 
 x = Plate.new("ABC0004")
-y = Plate.new("ABCDE22")
+y = Plate.new("BBBBD00")
 
 # p Plate.numToAlphaPart 26
 
 # p Plate.alphaPartToNum("BA")
 
 # p x.to_s[0..x.to_s.length-5]
-p x + 1000000000
-p y + 100
+p x + 1
+p y + 1
 
 
 
