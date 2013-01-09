@@ -83,6 +83,23 @@ class Plate
     end
   end
   
+  def self.comparePlateWithConfidence(plateA,plateB,confidence)
+    if plateA.to_s == plateB.to_s
+      return 0
+    else
+      if plateA.to_s.scan(/\d+/).join('').length == plateB.to_s.scan(/\d+/).join('').length #Are of the same type
+        if plateA.to_i > plateB.to_i
+          return 1
+        else
+          
+        end
+      else #Arent the same type
+        if plateA.to_s.scan(/\d+/).join('').length == 2 and plateB.to_s.scan(/\d+/).join('').length == 2
+        end
+      end
+    end
+  end
+  
   def self.validatePlate(plate)
     plate.upcase!
     if plate.length == 7 and plate.scan(/[A-Z]/).count == 3 and plate.scan(/[0-9]/).count == 4 #old licence plate
@@ -102,69 +119,22 @@ class Plate
     @plateString
   end
   
-  def <=>(otherPlate)
-    return 0 if @plateString.eql? otherPlate.to_s.upcase
-    return 1 if @plateString > otherPlate.to_s.upcase
-    return -1 if @plateString < otherPlate.to_s.upcase
-  end
-  
-  def >(otherPlate)
-    if (self <=> otherPlate) == 1
-      return true
-    else
-      return false
-    end
-  end
-  
-  def <(otherPlate)
-    if (self <=> otherPlate) == -1
-      return true
-    else
-      return false
-    end
-  end
-  
-  def ==(otherPlate)
-    if (self <=> otherPlate) == 0
-      return true
-    else
-      return false
-    end
-  end
-  
-  def +(i)
-    numericPart = @plateString.scan(/\d+/).join('')
-    if numericPart.length == 4 
-      alphaPart = @plateString[0..2]
-      alphaPartAsNum = Plate.alphaPartToNum(alphaPart) * 10000
-      plateAsNum = alphaPartAsNum + numericPart.to_i
-      resultNum = plateAsNum + i
-      resultAlphaPart = Plate.numToAlphaPart (resultNum.to_s[0..resultNum.to_s.length - 5].to_i)
-      (1..3-resultAlphaPart.length).each do 
-        resultAlphaPart.prepend("A")
-      end
-      resultPlate = "#{resultAlphaPart}#{sprintf('%04d',resultNum.to_s[resultNum.to_s.length - 4..resultNum.to_s.length].to_i)}"
-      @plateString = resultPlate
+  def to_i
+    numericPart = stringPlate.scan(/\d+/).join('')
+    if numericPart.length == 4
+      alphaPart = stringPlate[0..2]
+      alphaPartAsNum = stringToNum(alphaPart)
+      return (alphaPartAsNum*10000) + numericPart.to_i
     elsif numericPart.length == 2
-      alphaPart = @plateString[0..4]
-      alphaPartAsNum = Plate.alphaPartToNum(alphaPart) * 100
-      plateAsNum = alphaPartAsNum + numericPart.to_i
-      resultNum = plateAsNum + i
-      resultAlphaPart = Plate.numToAlphaPart (resultNum.to_s[0..resultNum.to_s.length - 3].to_i)
-      resultAlphaPart.slice!(0..2)
-      (1..5-resultAlphaPart.length).each do 
-        resultAlphaPart.prepend("A")
-      end
-      # resultAlphaPart[0..resultAlphaPart.length - 4] = ""
-      resultPlate = "#{resultAlphaPart}#{sprintf '%02d',(resultNum.to_s[resultNum.to_s.length - 2..resultNum.to_s.length].to_i)}"
-      @plateString = resultPlate
+      alphaPart = stringPlate[0..4]
+      alphaPartAsNum = stringToNum(alphaPart)
+      return (alphaPartAsNum*100) + numericPart.to_i
     end
-    return @plateString
   end
   
   # private
   
-  @alpha = %w{A B C D E F G H I J K L M N O P Q R S T U V W X Y Z} # user A como Zero
+  @alpha = %w{A B C D E F G H I J K L M N O P Q R S T U V W X Y Z} # use A as zero
   
   def self.numToAlphaPart(num)
     result = []
@@ -175,7 +145,7 @@ class Plate
     return result.join('').reverse
   end
   
-  def self.alphaPartToNum(alphaPart)
+  def stringToNum(alphaPart)
     arrayAlphaPart = alphaPart.reverse.split(//)
     result = 0
     arrayAlphaPart.each_index do |i|
@@ -186,16 +156,13 @@ class Plate
   
 end
 
-x = Plate.new("ABC0004")
-y = Plate.new("BBBBD00")
+# x = Plate.new("ABC0004")
+# y = Plate.new("BBBBD00")
 
 # p Plate.numToAlphaPart 26
 
-# p Plate.alphaPartToNum("BA")
+# p stringToNum("BA")
 
 # p x.to_s[0..x.to_s.length-5]
-p x + 1
-p y + 1
-
-
-
+# p x + 1
+# p y + 1
