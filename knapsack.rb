@@ -81,20 +81,9 @@ class Bag
   
 end
 
-# #testing with random
-# bag = Bag.new(rand(1..2000)) #testing
-# numberOfItems = rand(1..2000) #testing
-# 
-# items = []
-# (1..numberOfItems).each do
-#   size = rand(1..2000) #testing
-#   value = rand(1..2000) #testing 
-#   items << Item.new(size,value)
-# end
-# items.sort!{|x,y| x.value <=> y.value}
-
 #testing 
-bag = Bag.new(4)
+bagSize = 4
+bag = Bag.new(bagSize)
 items = [] 
 i1 = Item.new(1,8)
 i2 = Item.new(2,4)
