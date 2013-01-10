@@ -79,6 +79,16 @@ class Bag
     self.items.pop
   end
   
+  def items=(newItems)
+    self.occupied = 0
+    self.value = 0
+    @items = newItems
+    newItems.each do |item|
+      self.occupied += item.size
+      self.value += item.value
+    end
+  end
+  
 end
 
 #testing 
@@ -91,12 +101,13 @@ i3 = Item.new(3,0)
 i4 = Item.new(2,5)
 i5 = Item.new(2,3)
 items = [i1, i2, i3, i4, i5]
-items.sort!{|x,y| x.value <=> y.value}
+# items = [i3]
+# items.sort!{|x,y| x.value <=> y.value}
 
 # #spoj
 # inputs = gets.chomp.split(" ")
-# bagCapacity = inputs[0].to_i #spoj
-# bag = Bag.new(bagCapacity) #spoj
+# bagSize = inputs[0].to_i #spoj
+# bag = Bag.new(bagSize) #spoj
 # 
 # numberOfItems = inputs[1].to_i #spoj
 # 
@@ -109,34 +120,27 @@ items.sort!{|x,y| x.value <=> y.value}
 # end
 # items.sort!{|x,y| x.value <=> y.value}
 
-#Solution
-items.each do |item|
-  successfullyPutItem = bag.put(item)
-  if not successfullyPutItem and not bag.empty? and item.value != 0
-    lastItemInTheBag = bag.items.last
-    if (item.value > lastItemInTheBag.value and item.size <= lastItemInTheBag.size) or 
-      (item.value == lastItemInTheBag.value and item.size < lastItemInTheBag.size)
-      bag.drop
-      bag.put(item)
-    elsif item.value > lastItemInTheBag.value and item.size > lastItemInTheBag.size
-      sumValue, sumSize, nDrops = lastItemInTheBag.value , lastItemInTheBag.size , 0
-      while sumValue < item.value and sumSize <= item.size and nDrops < bag.items.count do
-        auxItem = bag.items[bag.items.index(lastItemInTheBag) - 1 - nDrops]
-        sumValue += auxItem.value
-        sumSize += auxItem.size
-        nDrops += 1 
-      end
-      if sumValue < item.value and sumSize <= item.size and nDrops < bag.items.count
-        (1..nDrops).each do
-          bag.drop
-        end
-        bag.put(item)
-      end
-    end  
+#Internet Solution
+possibleBags = []
+(1..items.count).each do |index|
+  items.combination(index){|c|
+    bag = Bag.new(bagSize)
+    bag.items = c
+    possibleBags << bag
+  }
+end
+
+possibleBags.sort!{|x,y|y.value <=> x.value}
+maxValue = 0
+possibleBags.each do |bag|
+  if bag.size >= bag.occupied 
+    maxValue = bag.value
+    break
   end
 end
 
-p bag.value
+p maxValue
+
 
 
 
