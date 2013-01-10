@@ -91,34 +91,34 @@ class Bag
   
 end
 
-#testing 
-bagSize = 4
-bag = Bag.new(bagSize)
-items = [] 
-i1 = Item.new(1,8)
-i2 = Item.new(2,4)
-i3 = Item.new(3,0)
-i4 = Item.new(2,5)
-i5 = Item.new(2,3)
-items = [i1, i2, i3, i4, i5]
-# items = [i3]
-# items.sort!{|x,y| x.value <=> y.value}
+# #testing 
+# bagSize = 4
+# bag = Bag.new(bagSize)
+# items = [] 
+# i1 = Item.new(4,8)
+# i2 = Item.new(2,4)
+# i3 = Item.new(3,0)
+# i4 = Item.new(2,5)
+# i5 = Item.new(2,3)
+# items = [i1, i2, i3, i4, i5]
+# # items = [i3]
+# # items.sort!{|x,y| x.value <=> y.value}
 
-# #spoj
-# inputs = gets.chomp.split(" ")
-# bagSize = inputs[0].to_i #spoj
-# bag = Bag.new(bagSize) #spoj
-# 
-# numberOfItems = inputs[1].to_i #spoj
-# 
-# items = []
-# (1..numberOfItems).each do
-#   inputs = gets.chomp.split(" ")
-#   size = inputs[0].to_i
-#   value = inputs[1].to_i 
-#   items << Item.new(size,value)
-# end
-# items.sort!{|x,y| x.value <=> y.value}
+#spoj
+inputs = gets.chomp.split(" ")
+bagSize = inputs[0].to_i #spoj
+bag = Bag.new(bagSize) #spoj
+
+numberOfItems = inputs[1].to_i #spoj
+
+items = []
+(1..numberOfItems).each do
+  inputs = gets.chomp.split(" ")
+  size = inputs[0].to_i
+  value = inputs[1].to_i 
+  items << Item.new(size,value)
+end
+items.sort!{|x,y| x.value <=> y.value}
 
 #Internet Solution
 possibleBags = []
