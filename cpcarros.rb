@@ -85,6 +85,13 @@ def valid?(plate)
   end
 end
 
+def plateToNum(plate)
+  stringPart = plate.scan(/[A-Z]/)
+  numericPart = plate.scan(/[0-9]/)
+  stringPartAsNum = stringToNum(stringPart.join(""))
+  return stringPartAsNum * (10**numericPart.length) + numericPart.join("").to_i
+end
+
 def stringToNum(string)
   if string.length == 3
     array = string.split(//)
@@ -102,36 +109,6 @@ def stringToNum(string)
     end
     return result
   end
-end
-
-def numToStringOld(num)
-  result = []
-  begin 
-    result << @alpha[(num % @alpha.count)]
-    num = num / @alpha.count
-  end until num == 0
-  return result.join('').reverse
-end
-
-def numToStringNew(num)
-  result = []
-  begin 
-    result << @alphaNew[(num % @alphaNew.count)]
-    num = num / @alphaNew.count
-  end until num == 0
-  return result.join('').reverse
-end
-
-def plateToNum(plate)
-  stringPart = plate.scan(/[A-Z]/)
-  numericPart = plate.scan(/[0-9]/)
-  stringPartAsNum = stringToNum(stringPart.join(""))
-  return stringPartAsNum * (10**numericPart.length) + numericPart.join("").to_i
-end
-
-def newPlateNumBackToPlate(newPlateNum)
-  stringPartNum = newPlateNum.to_s[0..-3].to_i
-  return "#{numToStringNew(stringPartNum)}#{newPlateNum.to_s[newPlateNum.to_s.length - 2..newPlateNum.to_s.length]}"
 end
 
 # Entrada
@@ -157,18 +134,18 @@ end
 # 8. Y
 # 9. N
 # #Testing  
-# sm = "BBBBB23"
-# si = "BBBBB22"
-# c = 5
-# 
+# sm = "ZZZ0023"
+# si = "BBBBB26"
+# c = 100000
+
 # #Solution
-# maxNumForOldType = plateToNum("ZZZ9999")
-# firstNumForNewType = plateToNum("BBBBB00")
-# if not valid?(si)
+# maxNumFromOldType = plateToNum("ZZZ9999")
+# firstNumFromNewType = plateToNum("BBBBB00")
+# if not valid?(si) #CHeck if the plate sent by Isa is valid
 #   p 'N'
 # else
-#   if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are of the old type
-#     smNum, siNum = plateToNum(sm), plateToNum(si)
+#   if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are both from the old type
+#     smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
 #     if siNum <= smNum 
 #       p 'N'
 #     else
@@ -179,7 +156,7 @@ end
 #       end
 #     end
 #   elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
-#     smNum, siNum = plateToNum(sm), plateToNum(si)
+#     smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
 #     if siNum <= smNum 
 #       p 'N'
 #     else
@@ -189,24 +166,22 @@ end
 #         p 'N'
 #       end
 #     end
-#   elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5
-#     smNum, siNum = plateToNum(sm), plateToNum(si)
-#     if smNum + c > maxNumForOldType
-#       c -= maxNumForOldType - smNum
-#       smNum = firstNumForNewType
-#       if siNum <= smNum 
-#         p 'N'
+#   elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5 #SM is one of the old type and SI is one of the new type
+#     smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
+#     if smNum + c > maxNumFromOldType
+#       c -= (maxNumFromOldType - smNum)
+#       smNum = firstNumFromNewType
+#       if siNum <= smNum + c
+#         p 'Y'
 #       else
-#         if siNum <= smNum + c
-#           p 'Y'
-#         else
-#           p 'N'
-#         end
+#         p 'N'
 #       end
 #     else
 #       p "N"
 #     end
-#   elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3
+#   elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3 #Check if Martin`s plate is from the new type and Isa`s plate is from the old type
+#     p 'N' 
+#   else
 #     p 'N'
 #   end
 # end
@@ -219,13 +194,13 @@ si = inputs[1]
 c = inputs[2].to_i
 while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
   #Solution
-  maxNumForOldType = plateToNum("ZZZ9999")
-  firstNumForNewType = plateToNum("BBBBB00")
-  if not valid?(si)
+  maxNumFromOldType = plateToNum("ZZZ9999")
+  firstNumFromNewType = plateToNum("BBBBB00")
+  if not valid?(si) #CHeck if the plate sent by Isa is valid
     p 'N'
   else
-    if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are of the old type
-      smNum, siNum = plateToNum(sm), plateToNum(si)
+    if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are both from the old type
+      smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
       if siNum <= smNum 
         p 'N'
       else
@@ -236,7 +211,7 @@ while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
         end
       end
     elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
-      smNum, siNum = plateToNum(sm), plateToNum(si)
+      smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
       if siNum <= smNum 
         p 'N'
       else
@@ -246,24 +221,22 @@ while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
           p 'N'
         end
       end
-    elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5
-      smNum, siNum = plateToNum(sm), plateToNum(si)
-      if smNum + c > maxNumForOldType
-        c -= maxNumForOldType - smNum
-        smNum = firstNumForNewType
-        if siNum <= smNum 
-          p 'N'
+    elsif sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 5 #SM is one of the old type and SI is one of the new type
+      smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
+      if smNum + c > maxNumFromOldType
+        c -= (maxNumFromOldType - smNum)
+        smNum = firstNumFromNewType
+        if siNum <= smNum + c
+          p 'Y'
         else
-          if siNum <= smNum + c
-            p 'Y'
-          else
-            p 'N'
-          end
+          p 'N'
         end
       else
         p "N"
       end
-    elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3
+    elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3 #Check if Martin`s plate is from the new type and Isa`s plate is from the old type
+      p 'N' 
+    else
       p 'N'
     end
   end
