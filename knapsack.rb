@@ -42,29 +42,29 @@ class Item
   
 end
 
-#testing 
-bagSize = 4
-items = [] 
-i1 = Item.new(1,8)
-i2 = Item.new(2,4)
-i3 = Item.new(3,0)
-i4 = Item.new(2,5)
-i5 = Item.new(2,3)
-items = [i1, i2, i3, i4, i5]
+# #testing 
+# bagSize = 4
+# items = [] 
+# i1 = Item.new(1,8)
+# i2 = Item.new(2,4)
+# i3 = Item.new(3,0)
+# i4 = Item.new(2,5)
+# i5 = Item.new(2,3)
+# items = [i1, i2, i3, i4, i5]
 
-# #spoj
-# inputs = gets.chomp.split(" ")
-# bagSize = inputs[0].to_i #spoj
-# 
-# numberOfItems = inputs[1].to_i #spoj
-# 
-# items = []
-# (1..numberOfItems).each do
-#   inputs = gets.chomp.split(" ")
-#   size = inputs[0].to_i
-#   value = inputs[1].to_i 
-#   items << Item.new(size,value)
-# end
+#spoj
+inputs = gets.chomp.split(" ")
+bagSize = inputs[0].to_i #spoj
+
+numberOfItems = inputs[1].to_i #spoj
+
+items = []
+(1..numberOfItems).each do
+  inputs = gets.chomp.split(" ")
+  size = inputs[0].to_i
+  value = inputs[1].to_i 
+  items << Item.new(size,value)
+end
 
 # # Second Internet Solution with Dynamic Programing
 # Setting matrix 
@@ -94,16 +94,16 @@ end
   end
 end
 
-p "                      0  1  2  3  4"
-valueMatrix.each_index do |i|
-  if i == 0
-    p "                NONE #{valueMatrix[i]}"
-  else
-    p "Valeu : #{items[i - 1].value} Weight : #{items[i - 1].size} #{valueMatrix[i]}"
-  end
-end
+p valueMatrix[items.length][bagSize]
 
-# p occupation
+# p "                      0  1  2  3  4"
+# valueMatrix.each_index do |i|
+#   if i == 0
+#     p "                NONE #{valueMatrix[i]}"
+#   else
+#     p "Valeu : #{items[i - 1].value} Weight : #{items[i - 1].size} #{valueMatrix[i]}"
+#   end
+# end
 
 
 
