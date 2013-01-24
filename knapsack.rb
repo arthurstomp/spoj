@@ -41,107 +41,69 @@ class Item
   end
   
 end
-#define what is a bag
-class Bag
-  attr_accessor :size, :items, :occupied, :value
-  
-  def initialize(size)
-    self.size = size
-    self.occupied = 0
-    self.value = 0
-    self.items = []
+
+#testing 
+bagSize = 4
+items = [] 
+i1 = Item.new(1,8)
+i2 = Item.new(2,4)
+i3 = Item.new(3,0)
+i4 = Item.new(2,5)
+i5 = Item.new(2,3)
+items = [i1, i2, i3, i4, i5]
+
+# #spoj
+# inputs = gets.chomp.split(" ")
+# bagSize = inputs[0].to_i #spoj
+# 
+# numberOfItems = inputs[1].to_i #spoj
+# 
+# items = []
+# (1..numberOfItems).each do
+#   inputs = gets.chomp.split(" ")
+#   size = inputs[0].to_i
+#   value = inputs[1].to_i 
+#   items << Item.new(size,value)
+# end
+
+# # Second Internet Solution with Dynamic Programing
+# Setting matrix 
+valueMatrix = []
+(0..items.length).each do |i|
+  valueMatrix << []
+  (0..bagSize).each do |j|
+    valueMatrix[i] << nil
   end
-  
-  def empty?
-    self.items.empty?
-  end
-  
-  def full?
-    self.occupied == self.size
-  end
-  
-  def put(item)
-    if item.size <= self.size - self.occupied and item.value != 0
-      self.items << item
-      self.items.sort!{|x,y| y.value <=> x.value}
-      self.occupied += item.size
-      self.value += item.value
-      return true
+end
+
+(0..items.length).each do |i|
+  (0..bagSize).each do |j|
+    if i == 0 #To NONE line in the matrix
+      valueMatrix[i][j] = 0 #Put zero for the first line of the valueMatrix
     else
-      return false
+      if items[i-1].size <= j #Check if the item fit on it`s on
+        if valueMatrix[i-1][j] >= valueMatrix[i-1][j-items[i-1].size] + items[i-1].value
+          valueMatrix[i][j] = valueMatrix[i-1][j]
+        else
+          valueMatrix[i][j] = valueMatrix[i-1][j-items[i-1].size] + items[i-1].value
+        end
+      else
+        valueMatrix[i][j] = valueMatrix[i-1][j]
+      end 
     end
   end
-  
-  def drop
-    lastItem = self.items.last
-    self.occupied -= lastItem.size
-    self.value -= lastItem.value
-    self.items.pop
-  end
-  
-  def items=(newItems)
-    self.occupied = 0
-    self.value = 0
-    @items = newItems
-    newItems.each do |item|
-      self.occupied += item.size
-      self.value += item.value
-    end
-  end
-  
 end
 
-# #testing 
-# bagSize = 4
-# bag = Bag.new(bagSize)
-# items = [] 
-# i1 = Item.new(4,8)
-# i2 = Item.new(2,4)
-# i3 = Item.new(3,0)
-# i4 = Item.new(2,5)
-# i5 = Item.new(2,3)
-# items = [i1, i2, i3, i4, i5]
-# # items = [i3]
-# # items.sort!{|x,y| x.value <=> y.value}
-
-#spoj
-inputs = gets.chomp.split(" ")
-bagSize = inputs[0].to_i #spoj
-bag = Bag.new(bagSize) #spoj
-
-numberOfItems = inputs[1].to_i #spoj
-
-items = []
-(1..numberOfItems).each do
-  inputs = gets.chomp.split(" ")
-  size = inputs[0].to_i
-  value = inputs[1].to_i 
-  items << Item.new(size,value)
-end
-items.sort!{|x,y| x.value <=> y.value}
-
-#Internet Solution
-possibleBags = []
-(1..items.count).each do |index|
-  items.combination(index){|c|
-    bag = Bag.new(bagSize)
-    bag.items = c
-    possibleBags << bag
-  }
-end
-
-possibleBags.sort!{|x,y|y.value <=> x.value}
-maxValue = 0
-possibleBags.each do |bag|
-  if bag.size >= bag.occupied 
-    maxValue = bag.value
-    break
+p "                      0  1  2  3  4"
+valueMatrix.each_index do |i|
+  if i == 0
+    p "                NONE #{valueMatrix[i]}"
+  else
+    p "Valeu : #{items[i - 1].value} Weight : #{items[i - 1].size} #{valueMatrix[i]}"
   end
 end
 
-p maxValue
-
-
+# p occupation
 
 
 
