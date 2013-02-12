@@ -25,24 +25,29 @@ long long  potencia(int x, int n){
 
 int isPlacaValida(char* placa){
 	int i;
+	//printf("%d %s\n",strlen(placa),placa);
 	if (strlen(placa)==7 ){
 		int char3=isnumber(placa[3]);
 		int char4=isnumber(placa[4]);
+		//printf("chars: %d %d\n",char3,char4);
 		if ( (!char3&&char4) || (!char4&&char3) )
 			return 0;
+		//printf("teste\n");
 		if (char3&&char4){
 			for (i=2;i>=0;i--)
-				if (placa[i]>'A' && placa[i]<'Z')
+				if (placa[i]>='A' && placa[i]<='Z')
 					return 1;
 		}else{
+		//	printf("%s",placa);
 			for (i=4;i>=0;i--)
-				if ( (placa[i]=='A' ) || (placa[i]=='C' ) || (placa[i]=='M' ) || (placa[i]=='I' )||  (placa[i]=='P')||(placa[i]<'A') || (placa[i]>'Z') )
+				if (  (placa[i]=='A' ) || (placa[i]=='C' ) || (placa[i]=='M' ) || (placa[i]=='I' )||  (placa[i]=='P') ||(placa[i]<'A')||(placa[i]>'Z')){
+					//printf("a");
 					return 0;
-				else
-					return 2;	
+				}
+			return 1;	//}
 		}
 	}
-	return 1;
+	return 0;
 }
 
 long long placa2num(char* pl,int tipo){
@@ -54,11 +59,11 @@ long long placa2num(char* pl,int tipo){
 			soma += (pl[i]-65) * potencia(26,3-i-1);   
 		}
 		soma= soma * potencia(10,4);
-		char* s2;
-		s2= malloc(4* sizeof(char));
-		strcpy(s2,&pl[3]);
+	//	char* s2;
+	//	s2= malloc(4* sizeof(char));
+		//strcpy(s2,&pl[3]);
 		//printf("soma: %d\n",soma);
-		long num=atoi(s2)+1;
+		long num= (pl[3]-'0')*10*10*10 +(pl[4]-'0')*10*10 +(pl[5]-'0')*10 + (pl[6]-'0')+1 ;
 		//printf("s2:%s numeral: %d\n",s2,num);
 		return soma + num;
 	}
@@ -79,11 +84,11 @@ long long placa2num(char* pl,int tipo){
 			soma += (pl[i]-65-j) * potencia(21,5-i-1);   
 		}
 		soma= soma * potencia(10,2);
-		char* s2;
-		s2= malloc(2* sizeof(char));
-		strcpy(s2,&pl[5]);
+		//char* s2;
+		//s2= malloc(2* sizeof(char));
+		//strcpy(s2,&pl[5]);
 		//printf("soma %s: %llu\n",pl,soma);
-		long long num=175760000+atoi(s2)+1;
+		long long num=175760001+(pl[5]-'0')*10 + (pl[6]-'0');
 		//printf("s2:%s numeral: %d\n",s2,num);
 		return soma + num;
 	}
@@ -105,6 +110,7 @@ int main(){
 		int k=1;	
 		while (((placa1[0]!='*')	 && (placa2[0]!='*') ) ){
 			if ((isPlacaValida(placa2))){ //,&letter,&number)) ){
+		//		printf("entrou\n");
 				pl2_tipoplaca=2;
 				pl1_tipoplaca=2;
 				if (isnumber(placa2[3]))
@@ -128,7 +134,7 @@ int main(){
 			scanf("%d",&numConfidencia);		
 			k++;
 		}
-	return 0;
+		return 0;
 }
 
 
