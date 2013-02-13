@@ -199,18 +199,7 @@ while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
   if not valid?(si) #CHeck if the plate sent by Isa is valid
     p 'N'
   else
-    if sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3 #They are both from the old type
-      smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
-      if siNum <= smNum 
-        p 'N'
-      else
-        if siNum <= smNum + c
-          p 'Y'
-        else
-          p 'N'
-        end
-      end
-    elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5 #They are of the new type
+    if (sm.scan(/[A-Z]/).count == 3 and si.scan(/[A-Z]/).count == 3) or (sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 5)#They are both from the old type
       smNum, siNum = plateToNum(sm), plateToNum(si) #Transform plates into numbers
       if siNum <= smNum 
         p 'N'
@@ -233,9 +222,7 @@ while inputs[0] != "*" and inputs[1] != "*" and inputs[2].to_i != 0 do
         end
       else
         p "N"
-      end
-    elsif sm.scan(/[A-Z]/).count == 5 and si.scan(/[A-Z]/).count == 3 #Check if Martin`s plate is from the new type and Isa`s plate is from the old type
-      p 'N' 
+      end 
     else
       p 'N'
     end

@@ -69,15 +69,11 @@ end
 # # Second Internet Solution with Dynamic Programing
 # Setting matrix 
 valueMatrix = []
+
 (0..items.length).each do |i|
   valueMatrix << []
   (0..bagSize).each do |j|
     valueMatrix[i] << nil
-  end
-end
-
-(0..items.length).each do |i|
-  (0..bagSize).each do |j|
     if i == 0 #To NONE line in the matrix
       valueMatrix[i][j] = 0 #Put zero for the first line of the valueMatrix
     else
