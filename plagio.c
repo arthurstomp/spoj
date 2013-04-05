@@ -26,16 +26,16 @@ int kmp(int *t, int n, int *p, int m){
   int i = 0; int j = 0;
   int *next = compute_next(p,m);
   int start = -1;
-  printf("n = %i , m = %i\n", n,m);
+  //printf("n = %i , m = %i\n", n,m);
   int k;
   for(k = 0; k < n; k++){
-    printf("%i ",t[k]);
+    //printf("%i ",t[k]);
   }
-  printf("\n",NULL);
+  //printf("\n",NULL);
   for(k = 0; k < m; k++){
-    printf("%i ",p[k]);
+    //printf("%i ",p[k]);
   }
-  printf("\n",NULL);
+  //printf("\n",NULL);
   while(start == -1  && i < n){
     if(p[j] == t[i]){
       if(m <= 1){
@@ -51,7 +51,7 @@ int kmp(int *t, int n, int *p, int m){
         i = i + 1;
       }
     }
-    printf("%i %i . i = %i j = %i\n",t[i],p[j], i , j);
+    //printf("%i %i . i = %i j = %i\n",t[i],p[j], i , j);
     //printf("j == m - 1 && m > 1 => %i",j == m - 1 && m > 1);
     if(j == m - 1 && m > 1){
       start = abs(i - m) ;
@@ -79,7 +79,11 @@ int *notes_to_semitones(char* t, int n){
     //printf("%s",note);
     n_note = note_to_number(note);
     aux = rest;
-    semitones[i] = abs(n_note - a_note);
+    if(a_note > n_note){
+      semitones[i] = (12-a_note)+n_note;
+    }else{
+      semitones[i] = abs(n_note - a_note);
+    }
     i++;
     a_note = n_note;
   }
@@ -142,13 +146,13 @@ int main(){
   //int *t3_aux = notes_to_semitones(t3,n_whitespaces(t3));
   //int *t4_aux = notes_to_semitones(t4,n_whitespaces(t4));
 
-  //int *p1_aux = notes_to_semitones(p1,n_whitespaces(p1));
+  //int *p1_aux = notes_to_semitones(p1,n_fscanfwhitespaces(p1));
   //int *p2_aux = notes_to_semitones(p2,n_whitespaces(p2));
   //int *p3_aux = notes_to_semitones(p3,n_whitespaces(p3));
   //int *p4_aux = notes_to_semitones(p4,n_whitespaces(p4));
 
   //printf("test 1 = %i\n",kmp(t1_aux,n_whitespaces(t1),p1_aux,n_whitespaces(p1)));
-  //printf("test 2 = %i\n",kmp(t2_aux,n_whitespaces(t2),p2_aux,n_whitespaces(p2)));
+  //printf("test 2 = %i\n",kmp(t2_aux,n_whfscanfitespaces(t2),p2_aux,n_whitespaces(p2)));
   //printf("test 3 = %i\n",kmp(t3_aux,n_whitespaces(t3),p3_aux,n_whitespaces(p3)));
   //printf("test 4 = %i\n",kmp(t4_aux,n_whitespaces(t4),p4_aux,n_whitespaces(p4)));
   
@@ -174,34 +178,100 @@ int main(){
   //int plagio = kmp(t_aux,sizeof(t_aux)/sizeof(t_aux[0]),p_aux,sizeof(p_aux)/sizeof(p_aux[0]));
   //printf("%i",plagio);
 
+
+  //testing with the real input
   int nt = 1; int np = 1;
   char t[1000000] ; char p[1000000] ;
-  scanf("%i %i%*c",&nt,&np);
+  FILE *fin = fopen("plagio.in","r");
+  FILE *fout = fopen("plagio.sol","r");
+  char out[2] ;
+  fscanf(fin,"%i %i%*c",&nt,&np);
   while(nt != 0 && np != 0){
-    scanf("%[^\n]%*c",t);
-    scanf("%[^\n]%*c",p);
+    fscanf(fin,"%[^\n]%*c",t);
+    //printf("%s\n",t);
+    fscanf(fin,"%[^\n]%*c",p);
+    //printf("%s\n",p);
     int nw_t = n_whitespaces(t);
     int *t_aux = notes_to_semitones(t,nw_t);
     int i;
-     for(i = 0; i < nw_t; i++){
-       printf("%i ",t_aux[i]);
-     }
+    for(i = 0; i < nw_t; i++){
+      //printf("%i ",t_aux[i]);
+    }
     //printf("\n",NULL);
     int nw_p = n_whitespaces(p);
     int *p_aux = notes_to_semitones(p,nw_p);
     for(i = 0; i < nw_p; i++){
-      printf("%i ",p_aux[i]);
+      //printf("%i ",p_aux[i]);
     }
     //printf("\n",NULL);
     int plagio = kmp(t_aux,nw_t,p_aux,nw_p);
     //printf("%i",plagio);
+    fscanf(fout,"%s%*c",out);
+    //printf("%s",out);
     if(plagio == -1){
-      printf("N\n");
+      if(strcmp("N",out) != 0){
+        printf("hey a erro between :\n",NULL);
+        for(i = 0; i < nw_t; i++){
+          printf("%i ",t_aux[i]);
+        }
+        printf("\n",NULL);
+        for(i = 0; i < nw_p; i++){
+          printf("%i ",p_aux[i]);
+        }
+        printf("\n",NULL);
+      }
+      //printf("N\n");
     }else{
-      printf("S\n");
+      if(strcmp("S",out) != 0){
+        printf("hey a erro between :\n",NULL);
+        for(i = 0; i < nw_t; i++){
+          printf("%i ",t_aux[i]);
+        }
+        printf("\n",NULL);
+        for(i = 0; i < nw_p; i++){
+          printf("%i ",p_aux[i]);
+        }
+        printf("\n",NULL);
+      }
+      //printf("S\n");
     }
-    scanf("%i %i%*c",&nt,&np);
+    //nt = 0; np = 0;fscanf
+    fscanf(fin,"%i %i%*c",&nt,&np);
   }
+  fclose(fin);
+  fclose(fout);
+
+
+
+  //real deal
+  //int nt = 1; int np = 1;
+  //char t[1000000] ; char p[1000000] ;
+  //scanf("%i %i%*c",&nt,&np);
+  //while(nt != 0 && np != 0){
+  //  scanf("%[^\n]%*c",t);
+  //  scanf("%[^\n]%*c",p);
+  //  int nw_t = n_whitespaces(t);
+  //  int *t_aux = notes_to_semitones(t,nw_t);
+  //  int i;
+  //   for(i = 0; i < nw_t; i++){
+  //     //printf("%i ",t_aux[i]);
+  //   }
+  //  //printf("\n",NULL);
+  //  int nw_p = n_whitespaces(p);
+  //  int *p_aux = notes_to_semitones(p,nw_p);
+  //  for(i = 0; i < nw_p; i++){
+  //    //printf("%i ",p_aux[i]);
+  //  }
+  //  //printf("\n",NULL);
+  //  int plagio = kmp(t_aux,nw_t,p_aux,nw_p);
+  //  //printf("%i",plagio);
+  //  if(plagio == -1){
+  //    printf("N\n");
+  //  }else{
+  //    printf("S\n");
+  //  }
+  //  scanf("%i %i%*c",&nt,&np);
+  //}
 
   return 0;
 }
