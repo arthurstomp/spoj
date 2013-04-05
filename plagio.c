@@ -14,6 +14,9 @@ int* compute_next(int *p, int m){
   next[1] = 0;
   for(i = 2; i < m; i++){
     j = next[i - 1] + 1;
+    if(j < 0){
+      j = 0;
+    }
     while(p[i-1] != p[j-1] && j > 0){
       j = next[j-1] + 1;
     }
@@ -146,39 +149,16 @@ int main(){
   //int *t3_aux = notes_to_semitones(t3,n_whitespaces(t3));
   //int *t4_aux = notes_to_semitones(t4,n_whitespaces(t4));
 
-  //int *p1_aux = notes_to_semitones(p1,n_fscanfwhitespaces(p1));
+  //int *p1_aux = notes_to_semitones(p1,n_whitespaces(p1));
   //int *p2_aux = notes_to_semitones(p2,n_whitespaces(p2));
   //int *p3_aux = notes_to_semitones(p3,n_whitespaces(p3));
   //int *p4_aux = notes_to_semitones(p4,n_whitespaces(p4));
 
   //printf("test 1 = %i\n",kmp(t1_aux,n_whitespaces(t1),p1_aux,n_whitespaces(p1)));
-  //printf("test 2 = %i\n",kmp(t2_aux,n_whfscanfitespaces(t2),p2_aux,n_whitespaces(p2)));
+  //printf("test 2 = %i\n",kmp(t2_aux,n_whitespaces(t2),p2_aux,n_whitespaces(p2)));
   //printf("test 3 = %i\n",kmp(t3_aux,n_whitespaces(t3),p3_aux,n_whitespaces(p3)));
   //printf("test 4 = %i\n",kmp(t4_aux,n_whitespaces(t4),p4_aux,n_whitespaces(p4)));
   
-  //char *t = "C Db D Eb E F Gb G Ab A Bb B";
-  //char *p = "C D";
-  //int *t_aux = notes_to_semitones(t, n_whitespaces(t));
-  //printf("number of whitespaces of %s = %i",t,n_whitespaces(t));
-  //printf("\n",NULL);
-  //int *p_aux = notes_to_semitones(p, n_whitespaces(p));
-  //printf("number of whitespaces of %s = %i",p,n_whitespaces(p));
-  //printf("\n",NULL);
-  //int i;
-  //printf("semitones of %s = ",t);
-  //for(i = 0; i < n_whitespaces(t); i++){
-  //  printf("%i ",t_aux[i]);
-  //}
-  //printf("\n",NULL);
-  //printf("semitones of %s = ",p);
-  //for(i = 0; i < n_whitespaces(p); i++){
-  //  printf("%i ",p_aux[i]);
-  //}
-  //printf("\n",NULL);
-  //int plagio = kmp(t_aux,sizeof(t_aux)/sizeof(t_aux[0]),p_aux,sizeof(p_aux)/sizeof(p_aux[0]));
-  //printf("%i",plagio);
-
-
   //testing with the real input
   int nt = 1; int np = 1;
   char t[1000000] ; char p[1000000] ;
@@ -224,14 +204,14 @@ int main(){
     }else{
       if(strcmp("S",out) != 0){
         printf("hey a erro between :\n",NULL);
-        for(i = 0; i < nw_t; i++){
-          printf("%i ",t_aux[i]);
-        }
-        printf("\n",NULL);
-        for(i = 0; i < nw_p; i++){
-          printf("%i ",p_aux[i]);
-        }
-        printf("\n",NULL);
+        //for(i = 0; i < nw_t; i++){
+        //  printf("%i ",t_aux[i]);
+        //}
+        //printf("\n",NULL);
+        //for(i = 0; i < nw_p; i++){
+        //  printf("%i ",p_aux[i]);
+        //}
+        //printf("\n",NULL);
       }
       //printf("S\n");
     }
