@@ -43,10 +43,10 @@ void print_array(void *a){
   int i;
   for(i = 0; i < sizeof(a)/sizeof(a[0]); i++){
     if(sizeof(a[0]) == sizeof(int)){
-      printf("%i",(*(int*)a)[0]);
+      printf("%i",(int*)a[0]);
     }
     if(sizeof(a[0]) == sizeof(char)){
-      printf("%s",(*(int*)a)[0]);
+      printf("%s",(int*)a[0]);
     }
   }
   printf("\n",NULL);
