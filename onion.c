@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<string.h>
 
+
 //Working
 int extreme_point(int points_x[], int points_y[],int n){
   int i;

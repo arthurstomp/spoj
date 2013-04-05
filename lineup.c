@@ -39,19 +39,6 @@ int n_whitespaces(char* s){
   return count;
 }
 
-void print_array(void *a){
-  int i;
-  for(i = 0; i < sizeof(a)/sizeof(a[0]); i++){
-    if(sizeof(a[0]) == sizeof(int)){
-      printf("%i",(int*)a[0]);
-    }
-    if(sizeof(a[0]) == sizeof(char)){
-      printf("%s",(int*)a[0]);
-    }
-  }
-  printf("\n",NULL);
-}
-
 int main(){
 
   //testing n_whitespaces
@@ -61,12 +48,28 @@ int main(){
   //free(s);
 
   //testing string to array
-  char *s = malloc(sizeof(char)*256);
-  scanf("%[^\n]%*c",s);
-  int *i = string_to_array(s);
-  print_array(i);
-  free(s);
-  free(i);
+  //char *s = "100 0 0 0 0";
+  //int *i = string_to_array(s);
+  //int j;
+  //for(j = 0; j < n_whitespaces(s); j++){
+  //  printf("%i ",i[j]);
+  //}
+  //free(i);
+  
+  //Real Deal
+  int n_tests;
+  scanf("%i",&n_tests);
+  int i;
+  char *p = malloc(sizeof(char)*43);
+  for(i = 0; i < n_tests ; i++){
+   int j;
+   void **players = malloc(sizeof(int*)*11);
+   for(j = 0; j < 11 ; j++){
+    scanf("%s",p);
+    int *p_a = string_to_array(p);
+    players[j] = p_a;
+   }
+  }
   return 0;
 }
 
