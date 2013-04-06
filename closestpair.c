@@ -19,9 +19,9 @@ int compareX(const void *a ,const void *b) {
   ponto *a_aux = (ponto*)a;
   ponto *b_aux = (ponto*)b;
   if (a_aux->x < b_aux->x){ 
-    return 0;  
+    return 1;  
   } else {
-    return -1;  
+    return 0;  
   }
 }  
 
@@ -29,9 +29,9 @@ int compareY(const void *a, const void *b) {
   int *a_aux = (int*)a;
   int *b_aux = (int*)b;
   if(points[(*a_aux)].y < points[(*b_aux)].y){ 
-    return 0;  
+    return 1;  
   } else{
-    return -1;  
+    return 0;  
   }   
 }  
 
@@ -46,7 +46,7 @@ double closest_pair(int left, int right) {
   }
 
   if (left + 1 == right) { 
-    return sqrt((points[left].x - points[right].x) * (points[left].x - points[right].x) + (points[left].y - points[right].y) * (points[left].y - points[right].y));
+    return  sqrt((points[left].x - points[right].x) * (points[left].x - points[right].x) + (points[left].y - points[right].y) * (points[left].y - points[right].y) );
   }
 
   int mid = (left + right) / 2;
@@ -73,7 +73,7 @@ double closest_pair(int left, int right) {
   for (i = 0; i < k; i++) {  
     for (j = i + 1; j < k && points[candidate_points[j]].y-points[candidate_points[i]].y < d ; j++) {  
       double dist = sqrt((points[candidate_points[i]].x - points[candidate_points[j]].x) * (points[candidate_points[i]].x - points[candidate_points[j]].x) +
-          (points[candidate_points[i]].y - points[candidate_points[j]].y) * (points[candidate_points[i]].y - points[candidate_points[j]].y));  
+          (points[candidate_points[i]].y - points[candidate_points[j]].y) * (points[candidate_points[i]].y - points[candidate_points[j]].y) );  
       if (d - dist > 1e-9){
         d = dist;
       }				
