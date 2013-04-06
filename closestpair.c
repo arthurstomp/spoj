@@ -1,10 +1,8 @@
-//#include <iostream.h>    
 #include <stdio.h>    
 #include <string.h>    
 #include<stdlib.h>
 #include <math.h>    
-//#include <algorithm.h>    
-#define  MAXN 268435455.0000 
+#define  MAX 268435455.0000 
 
 
 typedef struct{  
@@ -41,7 +39,7 @@ double closest_pair(int left, int right) {
   int i = 0;
   int j = 0;
 
-  double d = MAXN;
+  double d = MAX;
 
   if (left == right) { 
     return d;
