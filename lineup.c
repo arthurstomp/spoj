@@ -60,13 +60,20 @@ int main(){
   int n_tests;
   scanf("%i",&n_tests);
   int i;
-  char *p = malloc(sizeof(char)*43);
+  //*p = malloc(sizeof(char)*43);
   for(i = 0; i < n_tests ; i++){
    int j;
-   void **players = malloc(sizeof(int*)*11);
+   int** players = (int*) malloc(11*sizeof(int*));
    for(j = 0; j < 11 ; j++){
-    scanf("%s",p);
-    int *p_a = string_to_array(p);
+    int k=0;
+    int p;
+    int *p_a = (int*) malloc(sizeof(int));
+    for (k;k<11;k++){
+        scanf("%i ",&p);
+        p_a[k]=p;
+        
+    }
+   // int *p_a = string_to_array(p);
     players[j] = p_a;
    }
   }
